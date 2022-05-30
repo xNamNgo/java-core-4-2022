@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import com.exercise.constant.SystemConstant;
 import com.exercise.dao.BuildingDao;
 import com.exercise.dao.entity.BuildingEntity;
-import com.exercise.utils.ControllerUltils;
+import com.exercise.utils.ConnectionUtils;
 
 public class BuildingDaoImpl implements BuildingDao {
 	public ArrayList<BuildingEntity> findBuilding(String id, String name, String street, String ward, String district,
 			Integer floorarea) {
 		ArrayList<BuildingEntity> results = new ArrayList<BuildingEntity>();
 		try {
-			Connection conn = ControllerUltils.getConnection();
+			Connection conn = ConnectionUtils.getConnection();
 			Statement stmt = conn.createStatement();
 			StringBuilder sql = new StringBuilder("select * from building where " + SystemConstant.ONE_EQUAL_ONE);
 			if (id != null && !id.equals("")) {
