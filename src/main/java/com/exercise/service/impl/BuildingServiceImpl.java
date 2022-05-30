@@ -8,6 +8,7 @@ import com.exercise.dao.impl.BuildingDaoImpl;
 import com.exercise.model.dto.BuildingDTO;
 import com.exercise.model.output.BuildingOutput;
 import com.exercise.service.BuildingService;
+import com.exercise.utils.TypeBuildingUtils;
 
 public class BuildingServiceImpl implements BuildingService {
 	private BuildingDao buildingDao = new BuildingDaoImpl();
@@ -24,31 +25,12 @@ public class BuildingServiceImpl implements BuildingService {
 			buildingOutput.setName(item.getName());
 			buildingOutput.setAddress(item.getStreet() + " - " + item.getWard() + " - " + item.getDistrict());
 			buildingOutput.setFloorarea(item.getFloorarea());
-			StringBuilder type = formatType(item.getType());
+			StringBuilder type = TypeBuildingUtils.formatType(item.getType());
 			buildingOutput.setType(type.toString());
 			results.add(buildingOutput);
 		}
 		return results;
 	}
 
-	private static StringBuilder formatType(String type) {
-		String[] typeSplit = type.split(",");
-		StringBuilder formart = new StringBuilder();
-		for(int i =0;i < typeSplit.length ;i++) {
-			if(typeSplit[i].equals("tang-tret")) {
-				formart.append("Tầng trệt");
-			}
-			if(typeSplit[i].equals("nguyen-can")){
-				formart.append("Nguyên căn");
-			}
-			if(typeSplit[i].equals("noi-that")){
-				formart.append("Nội thất");
-			}
-			if(i < (typeSplit.length - 1)) {
-				formart.append(" , ");
-			}
-		}
-		return formart;
-	}
 
 }
