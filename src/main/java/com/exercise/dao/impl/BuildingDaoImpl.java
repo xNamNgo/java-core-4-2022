@@ -20,7 +20,7 @@ public class BuildingDaoImpl implements BuildingDao {
 			Statement stmt = conn.createStatement();
 			StringBuilder sql = new StringBuilder("select * from building where " + SystemConstant.ONE_EQUAL_ONE);
 			if (id != null && !id.equals("")) {
-				sql.append(" and id = " + id);
+				sql.append(" and id = '" + id + "'");
 			}
 			if (name != null && !name.equals("")) {
 				sql.append(" and name like '%" + name + "%'");
