@@ -34,7 +34,11 @@ public class BuildingListView {
 		System.out.println("============OUTPUT==============");
 		BuildingController buildingController = new BuildingController();
 		ArrayList<BuildingOutput> buildingOutputs = buildingController.findBuilding(buildingDTO);
-		showBuildingOutput(buildingOutputs);
+		if(buildingOutputs.size() > 0) {
+			showBuildingOutput(buildingOutputs);
+		} else {
+			System.out.println("Không tìm thấy kết quả!");
+		}
 
 	}
 
