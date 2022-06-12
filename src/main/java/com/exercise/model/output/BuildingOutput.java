@@ -2,7 +2,7 @@ package com.exercise.model.output;
 
 public class BuildingOutput {
 
-	private String id;
+	private Long id;
 	private String name;
 	private String address;
 //	private String street;
@@ -11,11 +11,11 @@ public class BuildingOutput {
 	private Integer floorarea;
 	private String type;
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
