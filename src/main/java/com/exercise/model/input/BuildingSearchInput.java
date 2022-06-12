@@ -1,24 +1,22 @@
-package com.exercise.model.dto;
+package com.exercise.model.input;
 
-public class BuildingDTO {
-
-	private Long id;
+public class BuildingSearchInput {
 	private String name;
 	private String street;
 	private String ward;
 	private String district;
-	private Integer floorarea;
+	private Integer FloorArea;
+
+	public Integer getFloorArea() {
+		return FloorArea;
+	}
+
+	public void setFloorArea(Integer floorArea) {
+		FloorArea = floorArea;
+	}
 
 	public String getName() {
 		return name;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public void setName(String name) {
@@ -47,14 +45,6 @@ public class BuildingDTO {
 
 	public void setDistrict(String district) {
 		this.district = district;
-	}
-
-	public Integer getFloorarea() {
-		return floorarea;
-	}
-
-	public void setFloorarea(Integer flooarea) {
-		this.floorarea = flooarea;
 	}
 
 }

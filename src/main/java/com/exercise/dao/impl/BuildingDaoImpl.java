@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.exercise.constant.SystemConstant;
 import com.exercise.dao.BuildingDao;
@@ -12,16 +13,13 @@ import com.exercise.dao.entity.BuildingEntity;
 import com.exercise.utils.ConnectionUtils;
 
 public class BuildingDaoImpl implements BuildingDao {
-	public ArrayList<BuildingEntity> findBuilding(String id, String name, String street, String ward, String district,
+	public List<BuildingEntity> findBuilding(String name, String street, String ward, String district,
 			Integer floorarea) {
-		ArrayList<BuildingEntity> results = new ArrayList<BuildingEntity>();
+		List<BuildingEntity> results = new ArrayList<BuildingEntity>();
 		try {
 			Connection conn = ConnectionUtils.getConnection();
 			Statement stmt = conn.createStatement();
 			StringBuilder sql = new StringBuilder("select * from building where " + SystemConstant.ONE_EQUAL_ONE);
-			if (id != null && !id.equals("")) {
-				sql.append(" and id = '" + id + "'");
-			}
 			if (name != null && !name.equals("")) {
 				sql.append(" and name like '%" + name + "%'");
 			}
@@ -41,7 +39,7 @@ public class BuildingDaoImpl implements BuildingDao {
 			ResultSet rs = stmt.executeQuery(sqlDebug);
 			while (rs.next()) {
 				BuildingEntity buildingEntity = new BuildingEntity();
-				buildingEntity.setId(rs.getString("id"));
+				buildingEntity.setId(rs.getLong("id"));
 				buildingEntity.setName(rs.getString("name"));
 				buildingEntity.setStreet(rs.getString("street"));
 				buildingEntity.setWard(rs.getString("ward"));

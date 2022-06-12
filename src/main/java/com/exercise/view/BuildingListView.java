@@ -1,40 +1,35 @@
 package com.exercise.view;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import com.exercise.controller.BuildingController;
 import com.exercise.model.dto.BuildingDTO;
+import com.exercise.model.input.BuildingSearchInput;
 import com.exercise.model.output.BuildingOutput;
 
 public class BuildingListView {
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
-		BuildingDTO buildingDTO = new BuildingDTO();
+		BuildingSearchInput buildingSearchInput = new BuildingSearchInput();
+
 		System.out.println("============INPUT==============");
-		System.out.print("Id : ");
-		String id = input.nextLine();
-		buildingDTO.setId(id);
 		System.out.print("Name : ");
-		String name = input.nextLine();
-		buildingDTO.setName(name);
+		buildingSearchInput.setName(input.nextLine());
 		System.out.print("Street : ");
-		String street = input.nextLine();
-		buildingDTO.setStreet(street);
+		buildingSearchInput.setStreet(input.nextLine());
 		System.out.print("Ward : ");
-		String ward = input.nextLine();
-		buildingDTO.setWard(ward);
+		buildingSearchInput.setWard(input.nextLine());
 		System.out.print("District : ");
-		String district = input.nextLine();
-		buildingDTO.setDistrict(district);
+		buildingSearchInput.setDistrict(input.nextLine());
 		System.out.print("Floorarea : ");
-		Integer floorarea = input.nextInt();
-		input.nextLine();
-		buildingDTO.setFloorarea(floorarea);
+		buildingSearchInput.setFloorArea(Integer.parseInt(input.nextLine()));
+		
 		System.out.println("============OUTPUT==============");
 		BuildingController buildingController = new BuildingController();
-		ArrayList<BuildingOutput> buildingOutputs = buildingController.findBuilding(buildingDTO);
-		if(buildingOutputs.size() > 0) {
+		List<BuildingOutput> buildingOutputs = buildingController.findBuilding(buildingSearchInput);
+		if (buildingOutputs.size() > 0) {
 			showBuildingOutput(buildingOutputs);
 		} else {
 			System.out.println("Không tìm thấy kết quả!");
@@ -42,7 +37,7 @@ public class BuildingListView {
 
 	}
 
-	public static void showBuildingOutput(ArrayList<BuildingOutput> buildingOutputs) {
+	public static void showBuildingOutput(List<BuildingOutput> buildingOutputs) {
 		for (BuildingOutput item : buildingOutputs) {
 			System.out.println("ID : " + item.getId() + " -  Name : " + item.getName());
 			System.out.println("Adress : " + item.getAddress());

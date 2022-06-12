@@ -1,7 +1,7 @@
 package com.exercise.dao.entity;
 
 public class BuildingEntity {
-	private String id;
+	private Long id;
 	private String name;
 	private String street;
 	private String ward;
@@ -9,11 +9,11 @@ public class BuildingEntity {
 	private Integer floorarea;
 	private String type;
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
