@@ -7,35 +7,32 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import exercise.constant.SystemConstant;
 import exercise.repository.RentTypeRepository;
+import exercise.repository.entity.RenttypeEntity;
 import exercise.utils.GetConnectionUtil;
 
 public class RentTypeRepositoryImpl implements RentTypeRepository {
 
 	@Override
-	public List<String> getRentType(Long bulidingId, List<String> rentType) {
+	public List<RenttypeEntity> findByBuildingId(Long bulidingId) {
+		List<RenttypeEntity> results = new ArrayList<>();
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		List<String> results = new ArrayList<>();
 		try {
 			conn = GetConnectionUtil.getConnection();
 			stmt = conn.createStatement();
-			StringBuilder sql = new StringBuilder("");
-			if (rentType.size() > 0) {
-				sql.append("select * from buildingrenttype as bRenttype "
-						+ "join renttype on bRenttype.renttypeid = renttype.id "
-						+ "join building on building.id = bRenttype.buildingid where building.id = " + bulidingId);
-				for (String item : rentType) {
-					sql.append(" and '" + item + "' in ('tang-tret','nguyen-can','noi-that')");
-				}
-			} else {
-				return null;
-			}
+			StringBuilder sql = new StringBuilder("select renttype.name from buildingrenttype "
+					+ "as bRenttype join renttype on bRenttype.renttypeid = renttype.id"
+					+ " join building on building.id = bRenttype.buildingid where building.id = " + bulidingId);
 			rs = stmt.executeQuery(sql.toString());
 			while (rs.next()) {
-				results.add(rs.getString("renttype.name"));
+				RenttypeEntity rentTypeEntity = new RenttypeEntity();
+				rentTypeEntity.setName(rs.getString("name"));
+				results.add(rentTypeEntity);
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -49,5 +46,4 @@ public class RentTypeRepositoryImpl implements RentTypeRepository {
 		}
 		return results;
 	}
-
 }

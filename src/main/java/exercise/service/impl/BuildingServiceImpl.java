@@ -12,6 +12,7 @@ import exercise.repository.RentTypeRepository;
 import exercise.repository.UserRepository;
 import exercise.repository.entity.BuildingEntity;
 import exercise.repository.entity.RentAreaEntity;
+import exercise.repository.entity.RenttypeEntity;
 import exercise.repository.impl.BuildingRepositoryImpl;
 import exercise.repository.impl.RentAreaRepositoryImpl;
 import exercise.repository.impl.RentTypeRepositoryImpl;
@@ -32,8 +33,8 @@ public class BuildingServiceImpl implements BuildingService {
 		List<BuildingEntity> buildingEnities = buildingRepository.findBuiding(buildingDTO.getName(),
 				buildingDTO.getFloorArea(), buildingDTO.getDistrictId(), buildingDTO.getWard(), buildingDTO.getStreet(),
 				buildingDTO.getNumberOfBasement(), buildingDTO.getDirection(), buildingDTO.getLevel(),
-				buildingDTO.getFromRentPrice(), buildingDTO.getToRentPrice());
- 		for (BuildingEntity item : buildingEnities) {
+				buildingDTO.getFromRentPrice(), buildingDTO.getToRentPrice(), buildingDTO.getRentType(),buildingDTO.getStaffName());
+		for (BuildingEntity item : buildingEnities) {
 			BuildingOutput buildingOutput = new BuildingOutput();
 			buildingOutput.setName(item.getName());
 			buildingOutput.setFloorArea(item.getFloorArea());
@@ -47,16 +48,28 @@ public class BuildingServiceImpl implements BuildingService {
 			// set rent area
 			List<Integer> rentAreaEntities = rentAreaRepository.getRentArea(item.getId(), buildingDTO.getFromRentArea(),
 					buildingDTO.getToRentArea());
-			if(rentAreaEntities.size() > 0) {
-				buildingOutput.setRentArea(rentAreaEntities);
+			List<String> rentAreas = new ArrayList<>();
+			if (rentAreaEntities.size() > 0) {
+				for (Integer intValue : rentAreaEntities) {
+					rentAreas.add(String.valueOf(intValue));
+				}
+				buildingOutput.setRentArea(String.join(",", rentAreas));
 			}
-			
-			//set tên nhân viên
-			buildingOutput.setStaffName(userRepository.getNameStaff(item.getId(),buildingDTO.getStaffName()));
 
-			//set buliding type
-			buildingOutput.setBuildingRenttype(rentTypeRepository.getRentType(item.getId(),buildingDTO.getRentType()));
-	
+			// set tên nhân viên
+			List<String> staff = userRepository.getStaffName(item.getId(), buildingDTO.getStaffName());
+			if (staff.size() > 0) {
+				buildingOutput.setStaffName(String.join(" , ", staff));
+			}
+
+			// set buliding type
+			List<RenttypeEntity> renttypeEntities = rentTypeRepository.findByBuildingId(item.getId());
+			List<String> bulidingTypes = new ArrayList<>();
+			for (RenttypeEntity item1 : renttypeEntities) {
+				bulidingTypes.add(item1.getName());
+			}
+			buildingOutput.setBuildingRenttype(String.join(" , ", bulidingTypes));
+
 			results.add(buildingOutput);
 		}
 

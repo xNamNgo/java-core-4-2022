@@ -8,7 +8,7 @@ public class GetDistrictNameUtils {
 		Map<Integer,String> results = new HashMap<>();
 		results.put(1, "Quận 1");
 		results.put(2, "Quận 2");
-		results.put(4, "Quận 4");
+		results.put(3, "Quận 4");
 		return results;
 	}
 }

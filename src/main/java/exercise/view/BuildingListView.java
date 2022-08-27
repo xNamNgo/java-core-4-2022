@@ -20,47 +20,51 @@ public class BuildingListView {
 		String direction = null;
 		String level = null;
 		int fromRentArea = 100;
-		int toRentArea = 200;
+		int toRentArea = 300;
 		long fromRentPrice = 10;
 		long toRentPrice = 20;
 		String staffName = "nguyen van";
 		String staffPhoneNumber = null;
 		List<String> rentType = new ArrayList<>();
 		rentType.add("noi-that");
-/*		rentType.add("nguyen-can");
-		rentType.add("noi-that");*/
+		rentType.add("nguyen-can");
+		rentType.add("noi-that");
 		
 		BuildingDTO buildingDTO = new BuildingDTO();
-		buildingDTO.setName(name);
-		buildingDTO.setFloorArea(floorArea);
-		buildingDTO.setDistrictId(districtId);
-		buildingDTO.setWard(ward);
-		buildingDTO.setStreet(street);
-		buildingDTO.setNumberOfBasement(numberOfBasement);
-		buildingDTO.setDirection(direction);
-		buildingDTO.setLevel(level);
-		buildingDTO.setFromRentArea(fromRentArea);
-		buildingDTO.setToRentArea(toRentArea);
-		buildingDTO.setFromRentPrice(fromRentPrice);
-		buildingDTO.setToRentPrice(toRentPrice);
-		buildingDTO.setStaffName(staffName);
-		buildingDTO.setStaffPhoneNumber(staffPhoneNumber);
-		buildingDTO.setRentType(rentType);
+//		buildingDTO.setName(name);
+//		buildingDTO.setFloorArea(floorArea);
+//		buildingDTO.setDistrictId(districtId);
+//		buildingDTO.setWard(ward);
+//		buildingDTO.setStreet(street);
+//		buildingDTO.setNumberOfBasement(numberOfBasement);
+//		buildingDTO.setDirection(direction);
+//		buildingDTO.setLevel(level);
+//		buildingDTO.setFromRentArea(fromRentArea);
+//		buildingDTO.setToRentArea(toRentArea);
+//		buildingDTO.setFromRentPrice(fromRentPrice);
+//		buildingDTO.setToRentPrice(toRentPrice);
+//		buildingDTO.setStaffName(staffName);
+//		buildingDTO.setStaffPhoneNumber(staffPhoneNumber);
+//		buildingDTO.setRentType(rentType);
 		BulidingController buildingController = new BulidingController();
 		List<BuildingOutput> results = buildingController.findBuilding(buildingDTO);
-		for (BuildingOutput item : results) {
-			System.out.println("Tên sản phẩm : " + item.getName());
-			System.out.println("Diện tích sàn : " + item.getFloorArea());
-			System.out.println("Địa chỉ : " + item.getAddress());
-			System.out.println("Số tầng hầm : " + item.getNumberOfBasement());
-			System.out.println("Hướng : " + item.getDirection());
-			System.out.println("Hạng : " + item.getLevel());
-			System.out.println("Diện tích : " + item.getRentArea());
-			System.out.println("Giá thuê : " + item.getRentPrice());
-			System.out.println("Tên quản lý : " + item.getStaffName());
-			System.out.println("Số điện thoại quản lý : " + item.getStaffPhoneNumber());
-			System.out.println("Loại tòa nhà : " + item.getBuildingRenttype());
+		if(results != null) {
+			for (BuildingOutput item : results) {
+				System.out.println("Tên sản phẩm : " + item.getName());
+				System.out.println("Diện tích sàn : " + item.getFloorArea());
+				System.out.println("Địa chỉ : " + item.getAddress());
+				System.out.println("Số tầng hầm : " + item.getNumberOfBasement());
+				System.out.println("Hướng : " + item.getDirection());
+				System.out.println("Hạng : " + item.getLevel());
+				System.out.println("Diện tích : " + item.getRentArea());
+				System.out.println("Giá thuê : " + item.getRentPrice());
+				System.out.println("Tên quản lý : " + item.getStaffName());
+				System.out.println("Số điện thoại quản lý : " + item.getStaffPhoneNumber());
+				System.out.println("Loại tòa nhà : " + item.getBuildingRenttype());
+				System.out.println("========================================");
+			}
+		} else {
+			System.out.println("Không tìm thấy kết quả");
 		}
-		System.out.println("hello");
 	}
 }

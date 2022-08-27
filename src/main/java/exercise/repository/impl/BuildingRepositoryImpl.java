@@ -17,7 +17,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 	@Override
 	public List<BuildingEntity> findBuiding(String name, Integer floorArea, Integer districtId, String ward,
 			String street, Integer numberOfBasement, String direction, String level, Long fromRentPrice,
-			Long toRentPrice) {
+			Long toRentPrice, List<String> rentType, String staffName) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -25,9 +25,48 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		try {
 			conn = GetConnectionUtil.getConnection();
 			stmt = conn.createStatement();
-			StringBuilder sql = new StringBuilder("select * from building where " + SystemConstant.ONE_EQUAL_ONE);
-			if (name != null && name.compareTo("") == 0) {
-				sql.append(" and name like %" + name + "%");
+			StringBuilder sql = new StringBuilder("select * from building");
+
+			// kiểm tra để sắp xếp các câu query theo đúng syntax
+			boolean flag = false;
+
+			// sau khi join xong dựa vào flag_1,flag_2 để thực hiện query tiếp theo.
+			boolean flag_1 = false; // kiểm tra renttype đã join chưa
+			boolean flag_2 = false; // kiểm tra staffname đã join chưa
+			if (rentType != null) {
+				flag = true;
+				flag_1 = true;
+				sql.append(" join buildingrenttype bRenttype on bRenttype.buildingid = building.id"
+						+ " join renttype on renttype.id = bRenttype.renttypeid ");
+			}
+
+			if (staffName != null) {
+				flag = true;
+				flag_2 = true;
+				sql.append(" join assignmentbuilding aBuilding on aBuilding.buildingid = building.id"
+						+ " join user on user.id = aBuilding.staffid join user_role on user_role.userid = user.id "
+						+ " join role on role.id = user_role.roleid");
+			}
+
+			// sau khi join các bảng xong thì dựa vào flag để append câu query
+			if (flag) {
+				if (flag_1) {
+					sql.append(" where renttype.code = '" + rentType.get(0) + "'");
+					for (int i = 1; i < rentType.size(); i++) {
+						sql.append(" or renttype.code  = ' " + rentType.get(i) + "'");
+					}
+				} else {
+					sql.append(" where " + SystemConstant.ONE_EQUAL_ONE);
+				}
+
+				if (flag_2) {
+					sql.append(" and user.fullname like '%" + staffName + "%'");
+				}
+				sql.append(" group by building.id");
+			}
+
+			if (name != null) {
+				sql.append(" and name like '%" + name + "%'");
 			}
 			if (floorArea != null) {
 				sql.append(" and floorarea = " + floorArea);
@@ -35,20 +74,20 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 			if (districtId != null) {
 				sql.append(" and districtid = " + districtId);
 			}
-			if (ward != null && ward.compareTo("") == 0) {
-				sql.append(" and ward like %" + ward + "%");
+			if (ward != null) {
+				sql.append(" and ward like '%" + ward + "%'");
 			}
-			if (street != null && street.compareTo("") == 0) {
-				sql.append(" and street like %" + street + "%");
+			if (street != null) {
+				sql.append(" and street like '%" + street + "%'");
 			}
 			if (numberOfBasement != null) {
 				sql.append(" and numberofbasement = " + numberOfBasement);
 			}
-			if (direction != null && direction.compareTo("") == 0) {
-				sql.append(" and direction like %" + direction + "%");
+			if (direction != null) {
+				sql.append(" and direction like '%" + direction + "%'");
 			}
-			if (level != null && level.compareTo("") == 0) {
-				sql.append(" and level like %" + level + "%");
+			if (level != null) {
+				sql.append(" and level like '%" + level + "%'");
 			}
 
 			if (fromRentPrice != null) {
@@ -57,8 +96,9 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 			if (toRentPrice != null) {
 				sql.append(" and rentprice <= " + toRentPrice);
 			}
+
 			rs = stmt.executeQuery(sql.toString());
-			while(rs.next()) {
+			while (rs.next()) {
 				BuildingEntity buildingEntity = new BuildingEntity();
 				buildingEntity.setId(rs.getLong("id"));
 				buildingEntity.setName(rs.getString("name"));

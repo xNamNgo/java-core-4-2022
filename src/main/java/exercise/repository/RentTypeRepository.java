@@ -2,6 +2,8 @@ package exercise.repository;
 
 import java.util.List;
 
+import exercise.repository.entity.RenttypeEntity;
+
 public interface RentTypeRepository {
-	public List<String> getRentType(Long bulidingId,List<String> rentType);
+	public List<RenttypeEntity> findByBuildingId(Long bulidingId);
 }

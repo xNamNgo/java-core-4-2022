@@ -9,25 +9,25 @@ public class BuildingOutput {
 	private Integer numberOfBasement;
 	private String direction;
 	private String level;
-	private List<Integer> rentArea;
+	private String rentArea;
 	private Long rentPrice;
-	private List<String> staffName;
-	private List<String> staffPhoneNumber;
-	private List<String> buildingRenttype;
+	private String staffName;
+	private String staffPhoneNumber;
+	private String buildingRenttype;
 
-	public List<String> getBuildingRenttype() {
+	public String getBuildingRenttype() {
 		return buildingRenttype;
 	}
 
-	public void setBuildingRenttype(List<String> buildingRenttype) {
+	public void setBuildingRenttype(String buildingRenttype) {
 		this.buildingRenttype = buildingRenttype;
 	}
 
-	public List<String> getStaffPhoneNumber() {
+	public String getStaffPhoneNumber() {
 		return staffPhoneNumber;
 	}
 
-	public void setStaffPhoneNumber(List<String> staffPhoneNumber) {
+	public void setStaffPhoneNumber(String staffPhoneNumber) {
 		this.staffPhoneNumber = staffPhoneNumber;
 	}
 
@@ -79,11 +79,11 @@ public class BuildingOutput {
 		this.level = level;
 	}
 
-	public List<Integer> getRentArea() {
+	public String getRentArea() {
 		return rentArea;
 	}
 
-	public void setRentArea(List<Integer> rentArea) {
+	public void setRentArea(String rentArea) {
 		this.rentArea = rentArea;
 	}
 
@@ -95,11 +95,11 @@ public class BuildingOutput {
 		this.rentPrice = rentPrice;
 	}
 
-	public List<String> getStaffName() {
+	public String getStaffName() {
 		return staffName;
 	}
 
-	public void setStaffName(List<String> staffName) {
+	public void setStaffName(String staffName) {
 		this.staffName = staffName;
 	}
 
