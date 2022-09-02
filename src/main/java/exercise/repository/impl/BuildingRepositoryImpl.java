@@ -9,6 +9,7 @@ import java.util.List;
 
 import exercise.constant.SystemConstant;
 import exercise.repository.BuildingRepository;
+import exercise.repository.entity.AssignmentBuildingEntity;
 import exercise.repository.entity.BuildingEntity;
 import exercise.utils.GetConnectionUtil;
 
@@ -126,4 +127,5 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		}
 		return results;
 	}
+	
 }

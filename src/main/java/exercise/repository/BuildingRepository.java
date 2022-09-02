@@ -2,6 +2,7 @@ package exercise.repository;
 
 import java.util.List;
 
+import exercise.repository.entity.AssignmentBuildingEntity;
 import exercise.repository.entity.BuildingEntity;
 
 public interface BuildingRepository {

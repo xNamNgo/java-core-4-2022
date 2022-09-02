@@ -7,4 +7,5 @@ import exercise.model.output.BuildingOutput;
 
 public interface BuildingService {
 	List<BuildingOutput> findBuliding(BuildingDTO buildingDTO);
+	void buildingAssignment(Long buildingId,List<Long> staffId);
 }

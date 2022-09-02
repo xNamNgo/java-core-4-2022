@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import exercise.controller.BulidingController;
+import exercise.controller.BuildingController;
 import exercise.model.dto.BuildingDTO;
 import exercise.model.output.BuildingOutput;
 
 public class BuildingListView {
 	public static void main(String[] args) {
+		//--------------------------------------------FIND BUILDING----------------------------------------
 //		Scanner input = new Scanner(System.in);
 		String name = "building";
 		int floorArea = 500;
@@ -27,8 +28,8 @@ public class BuildingListView {
 		String staffPhoneNumber = null;
 		List<String> rentType = new ArrayList<>();
 		rentType.add("noi-that");
-		rentType.add("nguyen-can");
-		rentType.add("noi-that");
+//		rentType.add("nguyen-can");
+//		rentType.add("noi-that");
 		
 		BuildingDTO buildingDTO = new BuildingDTO();
 //		buildingDTO.setName(name);
@@ -46,7 +47,7 @@ public class BuildingListView {
 //		buildingDTO.setStaffName(staffName);
 //		buildingDTO.setStaffPhoneNumber(staffPhoneNumber);
 //		buildingDTO.setRentType(rentType);
-		BulidingController buildingController = new BulidingController();
+		BuildingController buildingController = new BuildingController();
 		List<BuildingOutput> results = buildingController.findBuilding(buildingDTO);
 		if(results != null) {
 			for (BuildingOutput item : results) {
@@ -66,5 +67,9 @@ public class BuildingListView {
 		} else {
 			System.out.println("Không tìm thấy kết quả");
 		}
+		
+
+		
+		
 	}
 }
