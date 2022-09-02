@@ -14,8 +14,8 @@ public class BuildingAssignmentView {
 		Long buildingId = 1L;
 		staffId.add(1l);
 		staffId.add(3l);
-		staffId.add(4l);
-		
+//		staffId.add(4l);
+//		
 		buildingController.buildingAssignment(buildingId,staffId);
 		System.out.println("loading..");
 	}

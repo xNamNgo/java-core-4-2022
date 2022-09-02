@@ -144,6 +144,7 @@ public class BuildingServiceImpl implements BuildingService {
 					flag = true;
 				} else {
 					flag = false;
+					break;
 				}
 			}
 			if (flag) {
