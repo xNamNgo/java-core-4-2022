@@ -101,7 +101,7 @@ public class BuildingServiceImpl implements BuildingService {
 			}
 		} else {
 			List<Long> listStaffToAdd = listAdd(staffIdView, staffIdDatabase);
-			List<Long> listStaffToDelete = listDelete(staffIdView, staffIdDatabase);
+			List<Long> listStaffToDelete = listAdd(staffIdDatabase, staffIdView);
 			for (Long staffId : listStaffToAdd) {
 				assignmentBuildingRepository.insertStaffById(buildingId, staffId);
 			}
@@ -112,13 +112,13 @@ public class BuildingServiceImpl implements BuildingService {
 
 	}
 
-	private List<Long> listAdd(List<Long> staffIdView, List<Long> staffIdDatabase) {
+	private List<Long> listAdd(List<Long> list1, List<Long> list2) {
 		List<Long> listAdd = new ArrayList<>();
 		boolean flag = false;
-		for (int i = 0; i < staffIdView.size(); i++) {
-			Long idView = staffIdView.get(i);
-			for (int j = 0; j < staffIdDatabase.size(); j++) {
-				Long idDatabase = staffIdDatabase.get(j);
+		for (int i = 0; i < list1.size(); i++) {
+			Long idView = list1.get(i);
+			for (int j = 0; j < list2.size(); j++) {
+				Long idDatabase = list2.get(j);
 				if (idView != idDatabase) {
 					flag = true;
 				} else {
@@ -133,7 +133,7 @@ public class BuildingServiceImpl implements BuildingService {
 		return listAdd;
 	}
 
-	private List<Long> listDelete(List<Long> staffIdView, List<Long> staffIdDatabase) {
+/*	private List<Long> listDelete(List<Long> staffIdView, List<Long> staffIdDatabase) {
 		List<Long> listDelete = new ArrayList<>();
 		boolean flag = false;
 		for (int i = 0; i < staffIdDatabase.size(); i++) {
@@ -152,6 +152,6 @@ public class BuildingServiceImpl implements BuildingService {
 			}
 		}
 		return listDelete;
-	}
+	}*/
 
 }

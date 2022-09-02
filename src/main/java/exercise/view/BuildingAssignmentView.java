@@ -12,9 +12,9 @@ public class BuildingAssignmentView {
 		List<Long> staffId = new ArrayList<>();
 		
 		Long buildingId = 1L;
-		staffId.add(1l);
-		staffId.add(3l);
-//		staffId.add(4l);
+//		staffId.add(1l);
+		staffId.add(2l);
+//		staffId.add(3l);
 //		
 		buildingController.buildingAssignment(buildingId,staffId);
 		System.out.println("loading..");
