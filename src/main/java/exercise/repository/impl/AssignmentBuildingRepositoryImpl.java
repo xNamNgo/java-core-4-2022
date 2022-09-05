@@ -9,14 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exercise.repository.AssignmentBuildingRepository;
+import exercise.repository.JdbcRepository;
 import exercise.repository.entity.AssignmentBuildingEntity;
 import exercise.utils.GetConnectionUtil;
 
-public class AssignmentBuildingRepositoryImpl implements AssignmentBuildingRepository {
+public class AssignmentBuildingRepositoryImpl extends JdbcRepositoryImpl<AssignmentBuildingEntity>
+		implements AssignmentBuildingRepository {
 
 	// lấy danh sách nhân viên đang quản lý tòa nhà id .
 	@Override
-	public List<Long> getIdCurrentStaff(Long buildingId) {
+	public List<Long> getCurrentStaffByBuildingId(Long id) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -26,7 +28,7 @@ public class AssignmentBuildingRepositoryImpl implements AssignmentBuildingRepos
 			stmt = conn.createStatement();
 			String sql = "select * from assignmentbuilding " + " join user on user.id = assignmentbuilding.staffid"
 					+ " join user_role on user_role.userid = user.id "
-					+ " join role on role.id = user_role.roleid where buildingid = " + buildingId;
+					+ " join role on role.id = user_role.roleid where buildingid = " + id;
 			rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				results.add(rs.getLong("assignmentbuilding.staffid"));
@@ -35,35 +37,6 @@ public class AssignmentBuildingRepositoryImpl implements AssignmentBuildingRepos
 			e.printStackTrace();
 		}
 		return results;
-	}
-
-	@Override
-	public void removeStaffById(Long id) {
-		Connection conn = null;
-		Statement stmt = null;
-		try {
-			conn = GetConnectionUtil.getConnection();
-			stmt = conn.createStatement();
-			String sql = "delete from assignmentbuilding where staffid = " + id;
-			stmt.executeUpdate(sql);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void insertStaffById(Long buildingId,Long staffId) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try {
-			conn = GetConnectionUtil.getConnection();
-			pstmt = conn.prepareStatement("insert into assignmentbuilding(staffid,buildingId) values (?,?)");
-			pstmt.setLong(1, staffId);
-			pstmt.setLong(2, buildingId);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

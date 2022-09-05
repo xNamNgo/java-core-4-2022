@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import exercise.model.dto.BuildingDTO;
+import exercise.model.input.BuildingAssignmentInput;
 import exercise.model.output.BuildingOutput;
 import exercise.repository.AssignmentBuildingRepository;
 import exercise.repository.BuildingRepository;
@@ -91,35 +92,52 @@ public class BuildingServiceImpl implements BuildingService {
 
 	// giao tòa nhà cho nhân viên quản lý
 	@Override
-	public void buildingAssignment(Long buildingId, List<Long> staffIdView) {
-		List<Long> staffIdDatabase = assignmentBuildingRepository.getIdCurrentStaff(buildingId);
-		Collections.sort(staffIdView);
-		Collections.sort(staffIdDatabase);
-		if (staffIdDatabase.size() == 0) {
-			for (Long staffId : staffIdView) {
-				assignmentBuildingRepository.insertStaffById(buildingId, staffId);
+	public void buildingAssignment(BuildingAssignmentInput input) {
+		if (input != null) {
+			List<Long> staffIdDatabase = assignmentBuildingRepository.getCurrentStaffByBuildingId(input.getBuildingId());
+			List<Long> staffIdView = input.getStaffId();
+
+			Collections.sort(staffIdView);
+			Collections.sort(staffIdDatabase);
+			if (staffIdDatabase.size() == 0) { // ở db hiện tại không có staff nào quản lý
+				for (Long staffId : staffIdView) {
+					AssignmentBuildingEntity assignmentBuildingEntity = getObjectAssignmentBuilding(
+							input.getBuildingId(), staffId);
+					assignmentBuildingRepository.insert(assignmentBuildingEntity);
+				}
+			} else {
+				List<Long> listStaffToAdd = listAdd(staffIdView, staffIdDatabase);
+				List<Long> listStaffToDelete = listAdd(staffIdDatabase, staffIdView);
+				for (Long staffId : listStaffToAdd) {
+					AssignmentBuildingEntity assignmentBuildingEntity = getObjectAssignmentBuilding(
+							input.getBuildingId(), staffId);
+					assignmentBuildingRepository.insert(assignmentBuildingEntity);
+				}
+				for (Long staffId : listStaffToDelete) {
+					AssignmentBuildingEntity assignmentBuildingEntity = getObjectAssignmentBuilding(
+							input.getBuildingId(), staffId);
+					assignmentBuildingRepository.delete(assignmentBuildingEntity);
+				}
 			}
+
 		} else {
-			List<Long> listStaffToAdd = listAdd(staffIdView, staffIdDatabase);
-			List<Long> listStaffToDelete = listAdd(staffIdDatabase, staffIdView);
-			for (Long staffId : listStaffToAdd) {
-				assignmentBuildingRepository.insertStaffById(buildingId, staffId);
-			}
-			for (Long staffId : listStaffToDelete) {
-				assignmentBuildingRepository.removeStaffById(staffId);
-			}
+			System.out.println("Chưa nhập input!");
 		}
 
 	}
 
-	private List<Long> listAdd(List<Long> list1, List<Long> list2) {
+	private AssignmentBuildingEntity getObjectAssignmentBuilding(Long buildingId, Long staffId) {
+		return new AssignmentBuildingEntity(buildingId, staffId);
+	}
+
+	private List<Long> listAdd(List<Long> idToAdd, List<Long> idToCompare) {
 		List<Long> listAdd = new ArrayList<>();
-		boolean flag = false;
-		for (int i = 0; i < list1.size(); i++) {
-			Long idView = list1.get(i);
-			for (int j = 0; j < list2.size(); j++) {
-				Long idDatabase = list2.get(j);
-				if (idView != idDatabase) {
+		boolean flag = false; // list id add
+		for (int i = 0; i < idToAdd.size(); i++) {
+			Long idAdd = idToAdd.get(i);
+			for (int j = 0; j < idToCompare.size(); j++) {
+				Long idCompare = idToCompare.get(j);
+				if (idAdd != idCompare) {
 					flag = true;
 				} else {
 					flag = false;
@@ -127,31 +145,10 @@ public class BuildingServiceImpl implements BuildingService {
 				}
 			}
 			if (flag) {
-				listAdd.add(idView);
+				listAdd.add(idAdd);
 			}
 		}
 		return listAdd;
 	}
-
-/*	private List<Long> listDelete(List<Long> staffIdView, List<Long> staffIdDatabase) {
-		List<Long> listDelete = new ArrayList<>();
-		boolean flag = false;
-		for (int i = 0; i < staffIdDatabase.size(); i++) {
-			Long idDatabase = staffIdDatabase.get(i);
-			for (int j = 0; j < staffIdView.size(); j++) {
-				Long idView = staffIdView.get(j);
-				if (idDatabase != idView) {
-					flag = true;
-				} else {
-					flag = false;
-					break;
-				}
-			}
-			if (flag) {
-				listDelete.add(idDatabase);
-			}
-		}
-		return listDelete;
-	}*/
 
 }

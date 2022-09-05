@@ -3,6 +3,7 @@ package exercise.controller;
 import java.util.List;
 
 import exercise.model.dto.BuildingDTO;
+import exercise.model.input.BuildingAssignmentInput;
 import exercise.model.output.BuildingOutput;
 import exercise.service.BuildingService;
 import exercise.service.impl.BuildingServiceImpl;
@@ -15,7 +16,7 @@ public class BuildingController {
 		return results.size() > 0 ? results : null;
 	}
 	
-	public void buildingAssignment(Long buildingId,List<Long> staffId) {
-		buildingService.buildingAssignment(buildingId, staffId);
+	public void buildingAssignment(BuildingAssignmentInput input) {
+		buildingService.buildingAssignment(input);
 	}
 }
