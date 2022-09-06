@@ -3,9 +3,11 @@ package exercise.repository.entity;
 import java.util.List;
 
 import exercise.annotation.Column;
+import exercise.annotation.Id;
 import exercise.annotation.Table;
 
 @Table(name = "assignmentbuilding")
+@Id(idTable = "staffid")
 public class AssignmentBuildingEntity extends BaseEntity {
 
 	@Column(fieldName = "buildingid")

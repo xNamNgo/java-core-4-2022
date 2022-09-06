@@ -94,8 +94,9 @@ public class BuildingServiceImpl implements BuildingService {
 	@Override
 	public void buildingAssignment(BuildingAssignmentInput input) {
 		if (input != null) {
-			List<Long> staffIdDatabase = assignmentBuildingRepository.getCurrentStaffByBuildingId(input.getBuildingId());
 			List<Long> staffIdView = input.getStaffId();
+			List<Long> staffIdDatabase = assignmentBuildingRepository.getCurrentStaffByBuildingId(input.getBuildingId());
+
 
 			Collections.sort(staffIdView);
 			Collections.sort(staffIdDatabase);
@@ -114,9 +115,7 @@ public class BuildingServiceImpl implements BuildingService {
 					assignmentBuildingRepository.insert(assignmentBuildingEntity);
 				}
 				for (Long staffId : listStaffToDelete) {
-					AssignmentBuildingEntity assignmentBuildingEntity = getObjectAssignmentBuilding(
-							input.getBuildingId(), staffId);
-					assignmentBuildingRepository.delete(assignmentBuildingEntity);
+					assignmentBuildingRepository.delete(staffId);
 				}
 			}
 

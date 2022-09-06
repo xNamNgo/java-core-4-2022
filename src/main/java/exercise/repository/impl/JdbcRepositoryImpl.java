@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import exercise.annotation.Column;
+import exercise.annotation.Id;
 import exercise.annotation.Table;
 import exercise.constant.SystemConstant;
 import exercise.repository.JdbcRepository;
@@ -98,7 +99,7 @@ public class JdbcRepositoryImpl<T> implements JdbcRepository<T> {
 	}
 
 	@Override
-	public void delete(Object object) {
+	public void delete(Long id) {
 		Connection conn = null;
 		Statement stmt = null;
 		try {
@@ -111,16 +112,13 @@ public class JdbcRepositoryImpl<T> implements JdbcRepository<T> {
 			}
 			StringBuilder sql = new StringBuilder(
 					"delete from " + tableName + " where " + SystemConstant.ONE_EQUAL_ONE);
-			Class<?> zClass = object.getClass();
-			for(Field field : zClass.getDeclaredFields()) {
-				if(field.isAnnotationPresent(Column.class)) {
-					field.setAccessible(true);
-					Column column = field.getAnnotation(Column.class);
-					sql.append(" and ").append(column.fieldName()).append(" = ").append(field.get(object));
-				}
+			
+			if(tClass.isAnnotationPresent(Id.class)) {
+				Id idTable = tClass.getAnnotation(Id.class);
+				sql.append(" and ").append(idTable.idTable()).append(" = " + id);
 			}
 			stmt.executeUpdate(sql.toString());
-		} catch (SQLException | IllegalArgumentException | IllegalAccessException e) {
+		} catch (SQLException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 
