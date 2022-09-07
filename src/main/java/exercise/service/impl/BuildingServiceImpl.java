@@ -3,6 +3,7 @@ package exercise.service.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import exercise.repository.impl.RentTypeRepositoryImpl;
 import exercise.repository.impl.UserRepositoryImpl;
 import exercise.service.BuildingService;
 import exercise.utils.GetDistrictNameUtils;
+import exercise.utils.GetFieldsMapUtils;
 
 public class BuildingServiceImpl implements BuildingService {
 	BuildingRepository buildingRepository = new BuildingRepositoryImpl();
@@ -37,12 +39,9 @@ public class BuildingServiceImpl implements BuildingService {
 	@Override
 	public List<BuildingOutput> findBuliding(BuildingDTO buildingDTO) {
 		List<BuildingOutput> results = new ArrayList<>();
+		Map<String, Object> fields = GetFieldsMapUtils.getFieldsMap(buildingDTO);
 
-		List<BuildingEntity> buildingEnities = buildingRepository.findBuiding(buildingDTO.getName(),
-				buildingDTO.getFloorArea(), buildingDTO.getDistrictId(), buildingDTO.getWard(), buildingDTO.getStreet(),
-				buildingDTO.getNumberOfBasement(), buildingDTO.getDirection(), buildingDTO.getLevel(),
-				buildingDTO.getFromRentPrice(), buildingDTO.getToRentPrice(), buildingDTO.getRentType(),
-				buildingDTO.getStaffName());
+		List<BuildingEntity> buildingEnities = buildingRepository.findBuiding(fields);
 		for (BuildingEntity item : buildingEnities) {
 			BuildingOutput buildingOutput = new BuildingOutput();
 			buildingOutput.setName(item.getName());
@@ -85,6 +84,9 @@ public class BuildingServiceImpl implements BuildingService {
 		return results;
 	}
 
+
+
+	// lấy string của district
 	private String getDisctrictType(Integer districtId) {
 		Map<Integer, String> districtTypeMap = GetDistrictNameUtils.getDistrictName();
 		return districtTypeMap.get(districtId);
@@ -95,8 +97,8 @@ public class BuildingServiceImpl implements BuildingService {
 	public void buildingAssignment(BuildingAssignmentInput input) {
 		if (input != null) {
 			List<Long> staffIdView = input.getStaffId();
-			List<Long> staffIdDatabase = assignmentBuildingRepository.getCurrentStaffByBuildingId(input.getBuildingId());
-
+			List<Long> staffIdDatabase = assignmentBuildingRepository
+					.getCurrentStaffByBuildingId(input.getBuildingId());
 
 			Collections.sort(staffIdView);
 			Collections.sort(staffIdDatabase);

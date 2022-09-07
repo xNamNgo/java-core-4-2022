@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import exercise.constant.SystemConstant;
 import exercise.repository.BuildingRepository;
@@ -16,9 +17,7 @@ import exercise.utils.GetConnectionUtil;
 public class BuildingRepositoryImpl implements BuildingRepository {
 
 	@Override
-	public List<BuildingEntity> findBuiding(String name, Integer floorArea, Integer districtId, String ward,
-			String street, Integer numberOfBasement, String direction, String level, Long fromRentPrice,
-			Long toRentPrice, List<String> rentType, String staffName) {
+	public List<BuildingEntity> findBuiding(Map<String, Object> fields) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -26,6 +25,22 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		try {
 			conn = GetConnectionUtil.getConnection();
 			stmt = conn.createStatement();
+			
+			// lấy fields
+			List<String> rentType = (List<String>) fields.get("rentType");
+			String name = (String) fields.get("name");
+			Integer floorArea = (Integer) fields.get("floorArea");
+			Integer districtId = (Integer) fields.get("districtId");
+			String ward = (String) fields.get("ward");
+			String street = (String) fields.get("street");
+			Integer numberOfBasement = (Integer) fields.get("numberOfBasement");
+			String direction = (String) fields.get("direction");
+			String level = (String) fields.get("level");
+			Long fromRentPrice = (Long) fields.get("fromRentPrice");
+			Long toRentPrice = (Long) fields.get("toRentPrice");
+			String staffName = (String) fields.get("staffName");
+			
+			//sql query
 			StringBuilder sql = new StringBuilder("select * from building");
 
 			// kiểm tra để sắp xếp các câu query theo đúng syntax
@@ -67,7 +82,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 			}
 
 			if (name != null) {
-				sql.append(" and name like '%" + name + "%'");
+				sql.append(" and building.name like '%" + name + "%'");
 			}
 			if (floorArea != null) {
 				sql.append(" and floorarea = " + floorArea);
@@ -127,5 +142,5 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 		}
 		return results;
 	}
-	
+
 }

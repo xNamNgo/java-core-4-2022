@@ -14,7 +14,7 @@ public class BuildingAssignmentView {
 		List<Long> staffId = new ArrayList<>();
 //		staffId.add(1l);
 		staffId.add(2l);
-		staffId.add(3l);
+//		staffId.add(3l);
 		
 		input.setBuildingId(1l);
 		input.setStaffId(staffId);
