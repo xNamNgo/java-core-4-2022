@@ -22,6 +22,8 @@ public class GetFieldsMapUtils {
 		result.put("fromRentPrice", buildingDTO.getFromRentPrice());
 		result.put("toRentPrice", buildingDTO.getToRentPrice());
 		result.put("rentType", buildingDTO.getRentType());
+		result.put("fromRentArea", buildingDTO.getFromRentArea());
+		result.put("toRentArea", buildingDTO.getToRentArea());
 		result.put("staffName", buildingDTO.getStaffName());
 		return result;
 	}

@@ -37,9 +37,8 @@ public class BuildingServiceImpl implements BuildingService {
 
 	// tìm kiếm tòa nhà .
 	@Override
-	public List<BuildingOutput> findBuliding(BuildingDTO buildingDTO) {
+	public List<BuildingOutput> findBuliding(Map<String, Object> fields) {
 		List<BuildingOutput> results = new ArrayList<>();
-		Map<String, Object> fields = GetFieldsMapUtils.getFieldsMap(buildingDTO);
 
 		List<BuildingEntity> buildingEnities = buildingRepository.findBuiding(fields);
 		for (BuildingEntity item : buildingEnities) {
@@ -54,8 +53,8 @@ public class BuildingServiceImpl implements BuildingService {
 			buildingOutput.setRentPrice(item.getRentPrice());
 
 			// set rent area
-			List<Integer> rentAreaEntities = rentAreaRepository.getRentArea(item.getId(), buildingDTO.getFromRentArea(),
-					buildingDTO.getToRentArea());
+			List<Integer> rentAreaEntities = rentAreaRepository.getRentArea(item.getId(),
+					(Integer) fields.get("fromRentArea"), (Integer) fields.get("toRentArea"));
 			List<String> rentAreas = new ArrayList<>();
 			if (rentAreaEntities.size() > 0) {
 				for (Integer intValue : rentAreaEntities) {
@@ -65,7 +64,7 @@ public class BuildingServiceImpl implements BuildingService {
 			}
 
 			// set tên nhân viên
-			List<String> staff = userRepository.getStaffName(item.getId(), buildingDTO.getStaffName());
+			List<String> staff = userRepository.getStaffName(item.getId(), (String) fields.get("staffName"));
 			if (staff.size() > 0) {
 				buildingOutput.setStaffName(String.join(" , ", staff));
 			}
@@ -83,8 +82,6 @@ public class BuildingServiceImpl implements BuildingService {
 
 		return results;
 	}
-
-
 
 	// lấy string của district
 	private String getDisctrictType(Integer districtId) {

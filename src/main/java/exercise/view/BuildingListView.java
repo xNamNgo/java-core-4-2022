@@ -2,11 +2,13 @@ package exercise.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import exercise.controller.BuildingController;
 import exercise.model.dto.BuildingDTO;
 import exercise.model.output.BuildingOutput;
+import exercise.utils.GetFieldsMapUtils;
 
 public class BuildingListView {
 	public static void main(String[] args) {
@@ -28,27 +30,28 @@ public class BuildingListView {
 		String staffPhoneNumber = null;
 		List<String> rentType = new ArrayList<>();
 		rentType.add("noi-that");
-//		rentType.add("nguyen-can");
+		rentType.add("nguyen-can");
 //		rentType.add("noi-that");
 		
 		BuildingDTO buildingDTO = new BuildingDTO();
-		buildingDTO.setName(name);
-		buildingDTO.setFloorArea(floorArea);
-		buildingDTO.setDistrictId(districtId);
-		buildingDTO.setWard(ward);
-		buildingDTO.setStreet(street);
-		buildingDTO.setNumberOfBasement(numberOfBasement);
-		buildingDTO.setDirection(direction);
-		buildingDTO.setLevel(level);
-		buildingDTO.setFromRentArea(fromRentArea);
-		buildingDTO.setToRentArea(toRentArea);
-		buildingDTO.setFromRentPrice(fromRentPrice);
-		buildingDTO.setToRentPrice(toRentPrice);
-		buildingDTO.setStaffName(staffName);
-		buildingDTO.setStaffPhoneNumber(staffPhoneNumber);
-//		buildingDTO.setRentType(rentType);
+//		buildingDTO.setName(name);
+//		buildingDTO.setFloorArea(floorArea);
+//		buildingDTO.setDistrictId(districtId);
+//		buildingDTO.setWard(ward);
+//		buildingDTO.setStreet(street);
+//		buildingDTO.setNumberOfBasement(numberOfBasement);
+//		buildingDTO.setDirection(direction);
+//		buildingDTO.setLevel(level);
+//		buildingDTO.setFromRentArea(fromRentArea);
+//		buildingDTO.setToRentArea(toRentArea);
+//		buildingDTO.setFromRentPrice(fromRentPrice);
+//		buildingDTO.setToRentPrice(toRentPrice);
+//		buildingDTO.setStaffName(staffName);
+//		buildingDTO.setStaffPhoneNumber(staffPhoneNumber);
+		buildingDTO.setRentType(rentType);
 		BuildingController buildingController = new BuildingController();
-		List<BuildingOutput> results = buildingController.findBuilding(buildingDTO);
+		Map<String, Object> fields = GetFieldsMapUtils.getFieldsMap(buildingDTO);
+		List<BuildingOutput> results = buildingController.findBuilding(fields);
 		if(results != null) {
 			for (BuildingOutput item : results) {
 				System.out.println("Tên sản phẩm : " + item.getName());
