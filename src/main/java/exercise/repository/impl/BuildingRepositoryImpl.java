@@ -43,12 +43,13 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 			//sql query
 			StringBuilder sql = new StringBuilder("select * from building");
 
-			// kiểm tra để sắp xếp các câu query theo đúng syntax
+			// kiểm tra để join bảng
 			boolean flag = false;
 
 			// sau khi join xong dựa vào flag_1,flag_2 để thực hiện query tiếp theo.
 			boolean flag_1 = false; // kiểm tra renttype đã join chưa
 			boolean flag_2 = false; // kiểm tra staffname đã join chưa
+			
 			if (rentType != null) {
 				flag = true;
 				flag_1 = true;
@@ -63,6 +64,11 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 						+ " join user on user.id = aBuilding.staffid join user_role on user_role.userid = user.id "
 						+ " join role on role.id = user_role.roleid");
 			}
+			
+			if(districtId != null) {
+				flag = true;
+				sql.append(" join district on district.id = building.districtid");
+			}
 
 			// sau khi join các bảng xong thì dựa vào flag để append câu query
 			if (flag) {
@@ -71,14 +77,13 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 					for (int i = 1; i < rentType.size(); i++) {
 						sql.append(" or renttype.code  = ' " + rentType.get(i) + "'");
 					}
-				} else {
-					sql.append(" where " + SystemConstant.ONE_EQUAL_ONE);
 				}
-
 				if (flag_2) {
 					sql.append(" and user.fullname like '%" + staffName + "%'");
 				}
 				sql.append(" group by building.id");
+			} else {
+				sql.append(" where " + SystemConstant.ONE_EQUAL_ONE);
 			}
 
 			if (name != null) {
@@ -119,7 +124,7 @@ public class BuildingRepositoryImpl implements BuildingRepository {
 				buildingEntity.setId(rs.getLong("id"));
 				buildingEntity.setName(rs.getString("name"));
 				buildingEntity.setFloorArea(rs.getInt("floorarea"));
-				buildingEntity.setDistrictId(rs.getInt("districtid"));
+				buildingEntity.setDistrictId(rs.getLong("districtid"));
 				buildingEntity.setWard(rs.getString("ward"));
 				buildingEntity.setStreet(rs.getString("street"));
 				buildingEntity.setNumberOfBasement(rs.getInt("numberofbasement"));

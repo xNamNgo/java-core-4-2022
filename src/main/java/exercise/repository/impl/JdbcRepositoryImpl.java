@@ -4,13 +4,17 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import exercise.annotation.Column;
 import exercise.annotation.Id;
 import exercise.annotation.Table;
 import exercise.constant.SystemConstant;
+import exercise.mapper.MapperResultSet;
 import exercise.repository.JdbcRepository;
 import exercise.utils.GetConnectionUtil;
 
@@ -121,6 +125,33 @@ public class JdbcRepositoryImpl<T> implements JdbcRepository<T> {
 		} catch (SQLException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}
-
 	}
+
+	@Override
+	public T findById(Long id) {
+		List<T> results = new ArrayList<>();
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = GetConnectionUtil.getConnection();
+			stmt = conn.createStatement();
+			String tableName = null;
+			if(tClass.isAnnotationPresent(Table.class)) {
+				Table table = tClass.getAnnotation(Table.class);
+				tableName = table.name();
+			}
+			String sql = "select * from " + tableName + " where id = " + id;
+			rs = stmt.executeQuery(sql);
+			MapperResultSet<T> mapperResultSet = new MapperResultSet<>();
+			results = mapperResultSet.mapRow(rs, tClass);
+			return results.size() > 0 ? results.get(0) : null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 }

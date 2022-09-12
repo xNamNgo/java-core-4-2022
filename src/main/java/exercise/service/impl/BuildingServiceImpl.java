@@ -1,32 +1,30 @@
 package exercise.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import exercise.model.dto.BuildingDTO;
 import exercise.model.input.BuildingAssignmentInput;
 import exercise.model.output.BuildingOutput;
 import exercise.repository.AssignmentBuildingRepository;
 import exercise.repository.BuildingRepository;
+import exercise.repository.DistrictRepository;
 import exercise.repository.RentAreaRepository;
 import exercise.repository.RentTypeRepository;
 import exercise.repository.UserRepository;
 import exercise.repository.entity.AssignmentBuildingEntity;
 import exercise.repository.entity.BuildingEntity;
-import exercise.repository.entity.RentAreaEntity;
+import exercise.repository.entity.DistrictEntity;
 import exercise.repository.entity.RenttypeEntity;
 import exercise.repository.impl.AssignmentBuildingRepositoryImpl;
 import exercise.repository.impl.BuildingRepositoryImpl;
+import exercise.repository.impl.DistrictRepositoryImpl;
 import exercise.repository.impl.RentAreaRepositoryImpl;
 import exercise.repository.impl.RentTypeRepositoryImpl;
 import exercise.repository.impl.UserRepositoryImpl;
 import exercise.service.BuildingService;
 import exercise.utils.GetDistrictNameUtils;
-import exercise.utils.GetFieldsMapUtils;
 
 public class BuildingServiceImpl implements BuildingService {
 	BuildingRepository buildingRepository = new BuildingRepositoryImpl();
@@ -34,6 +32,7 @@ public class BuildingServiceImpl implements BuildingService {
 	UserRepository userRepository = new UserRepositoryImpl();
 	RentTypeRepository rentTypeRepository = new RentTypeRepositoryImpl();
 	AssignmentBuildingRepository assignmentBuildingRepository = new AssignmentBuildingRepositoryImpl();
+	DistrictRepository districtRepository = new DistrictRepositoryImpl();
 
 	// tìm kiếm tòa nhà .
 	@Override
@@ -45,8 +44,8 @@ public class BuildingServiceImpl implements BuildingService {
 			BuildingOutput buildingOutput = new BuildingOutput();
 			buildingOutput.setName(item.getName());
 			buildingOutput.setFloorArea(item.getFloorArea());
-			String district = getDisctrictType(item.getDistrictId());
-			buildingOutput.setAddress(district + " - " + item.getWard() + " - " + item.getStreet());
+			DistrictEntity district = districtRepository.findById(item.getDistrictId()); // dùng findbyId thay vì tạo map.
+			buildingOutput.setAddress(district.getName() + " - " + item.getWard() + " - " + item.getStreet());
 			buildingOutput.setNumberOfBasement(item.getNumberOfBasement());
 			buildingOutput.setDirection(item.getDirection());
 			buildingOutput.setLevel(item.getLevel());
@@ -83,12 +82,6 @@ public class BuildingServiceImpl implements BuildingService {
 		return results;
 	}
 
-	// lấy string của district
-	private String getDisctrictType(Integer districtId) {
-		Map<Integer, String> districtTypeMap = GetDistrictNameUtils.getDistrictName();
-		return districtTypeMap.get(districtId);
-	}
-
 	// giao tòa nhà cho nhân viên quản lý
 	@Override
 	public void buildingAssignment(BuildingAssignmentInput input) {
@@ -106,8 +99,8 @@ public class BuildingServiceImpl implements BuildingService {
 					assignmentBuildingRepository.insert(assignmentBuildingEntity);
 				}
 			} else {
-				List<Long> listStaffToAdd = listAdd(staffIdView, staffIdDatabase);
-				List<Long> listStaffToDelete = listAdd(staffIdDatabase, staffIdView);
+				List<Long> listStaffToAdd = findItemOfSourceButNotInTarget(staffIdView, staffIdDatabase);
+				List<Long> listStaffToDelete = findItemOfSourceButNotInTarget(staffIdDatabase, staffIdView);
 				for (Long staffId : listStaffToAdd) {
 					AssignmentBuildingEntity assignmentBuildingEntity = getObjectAssignmentBuilding(
 							input.getBuildingId(), staffId);
@@ -128,7 +121,7 @@ public class BuildingServiceImpl implements BuildingService {
 		return new AssignmentBuildingEntity(buildingId, staffId);
 	}
 
-	private List<Long> listAdd(List<Long> idToAdd, List<Long> idToCompare) {
+	private List<Long> findItemOfSourceButNotInTarget(List<Long> idToAdd, List<Long> idToCompare) {
 		List<Long> listAdd = new ArrayList<>();
 		boolean flag = false; // list id add
 		for (int i = 0; i < idToAdd.size(); i++) {
