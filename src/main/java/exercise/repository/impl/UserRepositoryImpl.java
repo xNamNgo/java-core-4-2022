@@ -21,10 +21,9 @@ public class UserRepositoryImpl implements UserRepository {
 		try {
 			conn = GetConnectionUtil.getConnection();
 			stmt = conn.createStatement();
-			StringBuilder sql = new StringBuilder("select user.fullname from user "
-					+ "join user_role on user.id = user_role.userid " + "join role on user_role.roleid = role.id "
-					+ "join assignmentbuilding aBuilding on aBuilding.staffid = user.id "
-					+ "join building on building.id = aBuilding.buildingid " + "where building.id = " + buildingId);
+			StringBuilder sql = new StringBuilder("select * from user"
+					+ " join assignmentbuilding aBuilding on aBuilding.staffid = user.id "
+					+ " join building on building.id = aBuilding.buildingid where building.id =  " + buildingId);
 			rs = stmt.executeQuery(sql.toString());
 			while (rs.next()) {
 				results.add(rs.getString("user.fullname"));
