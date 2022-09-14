@@ -2,6 +2,8 @@ package exercise.repository;
 
 import java.util.List;
 
+import exercise.repository.entity.RentAreaEntity;
+
 public interface RentAreaRepository {
-	List<Integer> getRentArea(Long id,Integer fromRentArea,Integer toRentArea);
+	List<Long> getRentAreaByBulidingId(Long id);
 }

@@ -115,7 +115,7 @@ public class JdbcRepositoryImpl<T> implements JdbcRepository<T> {
 				tableName = table.name();
 			}
 			StringBuilder sql = new StringBuilder(
-					"delete from " + tableName + " where " + SystemConstant.ONE_EQUAL_ONE);
+					"delete from " + tableName + " where " + SystemConstant.WHERE_ONE_EQUAL_ONE);
 			
 			if(tClass.isAnnotationPresent(Id.class)) {
 				Id idTable = tClass.getAnnotation(Id.class);

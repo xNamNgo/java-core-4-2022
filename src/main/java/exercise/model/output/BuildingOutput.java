@@ -4,9 +4,9 @@ import java.util.List;
 
 public class BuildingOutput {
 	private String name;
-	private Integer floorArea;
+	private Long floorArea;
 	private String address; // quận - phường đường
-	private Integer numberOfBasement;
+	private Long numberOfBasement;
 	private String direction;
 	private String level;
 	private String rentArea;
@@ -39,11 +39,11 @@ public class BuildingOutput {
 		this.name = name;
 	}
 
-	public Integer getFloorArea() {
+	public Long getFloorArea() {
 		return floorArea;
 	}
 
-	public void setFloorArea(Integer floorArea) {
+	public void setFloorArea(Long floorArea) {
 		this.floorArea = floorArea;
 	}
 
@@ -55,11 +55,11 @@ public class BuildingOutput {
 		this.address = address;
 	}
 
-	public Integer getNumberOfBasement() {
+	public Long getNumberOfBasement() {
 		return numberOfBasement;
 	}
 
-	public void setNumberOfBasement(Integer numberOfBasement) {
+	public void setNumberOfBasement(Long numberOfBasement) {
 		this.numberOfBasement = numberOfBasement;
 	}
 

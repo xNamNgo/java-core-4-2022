@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import exercise.converter.BuildingConverter;
 import exercise.model.input.BuildingAssignmentInput;
 import exercise.model.output.BuildingOutput;
 import exercise.repository.AssignmentBuildingRepository;
@@ -32,38 +33,30 @@ public class BuildingServiceImpl implements BuildingService {
 	UserRepository userRepository = new UserRepositoryImpl();
 	RentTypeRepository rentTypeRepository = new RentTypeRepositoryImpl();
 	AssignmentBuildingRepository assignmentBuildingRepository = new AssignmentBuildingRepositoryImpl();
-	DistrictRepository districtRepository = new DistrictRepositoryImpl();
+	
 
 	// tìm kiếm tòa nhà .
 	@Override
 	public List<BuildingOutput> findBuliding(Map<String, Object> fields) {
 		List<BuildingOutput> results = new ArrayList<>();
-
 		List<BuildingEntity> buildingEnities = buildingRepository.findBuiding(fields);
+		
 		for (BuildingEntity item : buildingEnities) {
-			BuildingOutput buildingOutput = new BuildingOutput();
-			buildingOutput.setName(item.getName());
-			buildingOutput.setFloorArea(item.getFloorArea());
-			DistrictEntity district = districtRepository.findById(item.getDistrictId()); // dùng findbyId thay vì tạo map.
-			buildingOutput.setAddress(district.getName() + " - " + item.getWard() + " - " + item.getStreet());
-			buildingOutput.setNumberOfBasement(item.getNumberOfBasement());
-			buildingOutput.setDirection(item.getDirection());
-			buildingOutput.setLevel(item.getLevel());
-			buildingOutput.setRentPrice(item.getRentPrice());
-
-			// set rent area
-			List<Integer> rentAreaEntities = rentAreaRepository.getRentArea(item.getId(),
-					(Integer) fields.get("fromRentArea"), (Integer) fields.get("toRentArea"));
-			List<String> rentAreas = new ArrayList<>();
+			BuildingConverter buildingConverter = new BuildingConverter();
+			BuildingOutput buildingOutput =  buildingConverter.convertEntityToDTO(item);
+			
+			// set rentarea
+			List<Long> rentAreaEntities = rentAreaRepository.getRentAreaByBulidingId(item.getId());
+			List<String> rentAreas = new ArrayList<>(); 
 			if (rentAreaEntities.size() > 0) {
-				for (Integer intValue : rentAreaEntities) {
+				for (Long intValue : rentAreaEntities) {
 					rentAreas.add(String.valueOf(intValue));
 				}
 				buildingOutput.setRentArea(String.join(",", rentAreas));
 			}
 
 			// set tên nhân viên
-			List<String> staff = userRepository.getStaffName(item.getId(), (String) fields.get("staffName"));
+			List<String> staff = userRepository.getStaffName(item.getId());
 			if (staff.size() > 0) {
 				buildingOutput.setStaffName(String.join(" , ", staff));
 			}

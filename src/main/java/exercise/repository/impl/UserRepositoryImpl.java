@@ -13,7 +13,7 @@ import exercise.utils.GetConnectionUtil;
 public class UserRepositoryImpl implements UserRepository {
 
 	@Override
-	public List<String> getStaffName(Long buildingId, String staffName) {
+	public List<String> getStaffName(Long buildingId) {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -25,9 +25,6 @@ public class UserRepositoryImpl implements UserRepository {
 					+ "join user_role on user.id = user_role.userid " + "join role on user_role.roleid = role.id "
 					+ "join assignmentbuilding aBuilding on aBuilding.staffid = user.id "
 					+ "join building on building.id = aBuilding.buildingid " + "where building.id = " + buildingId);
-			if (staffName != null) {
-				sql.append(" and role.name = 'Nhân Viên'" + " and user.fullname like '%" + staffName + "%'");
-			}
 			rs = stmt.executeQuery(sql.toString());
 			while (rs.next()) {
 				results.add(rs.getString("user.fullname"));

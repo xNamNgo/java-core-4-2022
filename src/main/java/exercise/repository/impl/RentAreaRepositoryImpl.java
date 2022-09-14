@@ -15,36 +15,23 @@ import exercise.utils.GetConnectionUtil;
 public class RentAreaRepositoryImpl implements RentAreaRepository {
 
 	@Override
-	public List<Integer> getRentArea(Long buildingId, Integer fromRentArea, Integer toRentArea) {
+	public List<Long> getRentAreaByBulidingId(Long id) {
+		List<Long> results = new ArrayList<>();
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		List<Integer> results = new ArrayList<>();
 		try {
 			conn = GetConnectionUtil.getConnection();
 			stmt = conn.createStatement();
-			StringBuilder sql = new StringBuilder("select * from rentarea where buildingid = " + buildingId);
-			if(fromRentArea != null) {
-				sql.append(" and value >= " + fromRentArea);
-			} 
-			if(toRentArea != null) {
-				sql.append(" and value <= " + toRentArea);
-			}
-			rs = stmt.executeQuery(sql.toString());
-			while(rs.next()) {
-				results.add(rs.getInt("value"));
+			String sql = SystemConstant.SELECT_FROM_RENTAREA + " where buildingid = " + id;
+			rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				results.add(rs.getLong("value"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				conn.close();
-				stmt.close();
-				rs.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		return results;
 	}
+
 }

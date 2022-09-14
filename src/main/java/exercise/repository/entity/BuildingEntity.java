@@ -5,8 +5,8 @@ public class BuildingEntity extends BaseEntity {
 	private String street;
 	private String ward;
 	private Long districtId;
-	private Integer numberOfBasement;
-	private Integer floorArea;
+	private Long numberOfBasement;
+	private Long floorArea;
 	private String direction; // null
 	private String level; // null
 	private Long rentPrice;
@@ -43,19 +43,19 @@ public class BuildingEntity extends BaseEntity {
 		this.districtId = districtId;
 	}
 
-	public Integer getNumberOfBasement() {
+	public Long getNumberOfBasement() {
 		return numberOfBasement;
 	}
 
-	public void setNumberOfBasement(Integer numberOfBasement) {
+	public void setNumberOfBasement(Long numberOfBasement) {
 		this.numberOfBasement = numberOfBasement;
 	}
 
-	public Integer getFloorArea() {
+	public Long getFloorArea() {
 		return floorArea;
 	}
 
-	public void setFloorArea(Integer floorArea) {
+	public void setFloorArea(Long floorArea) {
 		this.floorArea = floorArea;
 	}
 
