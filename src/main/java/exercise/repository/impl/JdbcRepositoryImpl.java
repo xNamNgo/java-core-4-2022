@@ -79,7 +79,7 @@ public class JdbcRepositoryImpl<T> implements JdbcRepository<T> {
 				values.append("?");
 			}
 		}
-		
+
 //				get field parent
 //		Class<?> parentClass = tClass.getSuperclass();
 //		while (parentClass != Object.class && parentClass != null) {
@@ -98,7 +98,7 @@ public class JdbcRepositoryImpl<T> implements JdbcRepository<T> {
 //		}
 
 		query.append("insert into " + tableName + "(" + fields.toString() + ") values(" + values.toString() + ")");
-				
+
 		return query;
 	}
 
@@ -116,8 +116,8 @@ public class JdbcRepositoryImpl<T> implements JdbcRepository<T> {
 			}
 			StringBuilder sql = new StringBuilder(
 					"delete from " + tableName + " where " + SystemConstant.WHERE_ONE_EQUAL_ONE);
-			
-			if(tClass.isAnnotationPresent(Id.class)) {
+
+			if (tClass.isAnnotationPresent(Id.class)) {
 				Id idTable = tClass.getAnnotation(Id.class);
 				sql.append(" and ").append(idTable.idTable()).append(" = " + id);
 			}
@@ -133,12 +133,12 @@ public class JdbcRepositoryImpl<T> implements JdbcRepository<T> {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-		
+
 		try {
 			conn = GetConnectionUtil.getConnection();
 			stmt = conn.createStatement();
 			String tableName = null;
-			if(tClass.isAnnotationPresent(Table.class)) {
+			if (tClass.isAnnotationPresent(Table.class)) {
 				Table table = tClass.getAnnotation(Table.class);
 				tableName = table.name();
 			}
@@ -152,6 +152,4 @@ public class JdbcRepositoryImpl<T> implements JdbcRepository<T> {
 		}
 		return null;
 	}
-	
-	
 }

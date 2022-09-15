@@ -10,22 +10,18 @@ import exercise.model.input.BuildingAssignmentInput;
 import exercise.model.output.BuildingOutput;
 import exercise.repository.AssignmentBuildingRepository;
 import exercise.repository.BuildingRepository;
-import exercise.repository.DistrictRepository;
 import exercise.repository.RentAreaRepository;
 import exercise.repository.RentTypeRepository;
 import exercise.repository.UserRepository;
 import exercise.repository.entity.AssignmentBuildingEntity;
 import exercise.repository.entity.BuildingEntity;
-import exercise.repository.entity.DistrictEntity;
 import exercise.repository.entity.RenttypeEntity;
 import exercise.repository.impl.AssignmentBuildingRepositoryImpl;
 import exercise.repository.impl.BuildingRepositoryImpl;
-import exercise.repository.impl.DistrictRepositoryImpl;
 import exercise.repository.impl.RentAreaRepositoryImpl;
 import exercise.repository.impl.RentTypeRepositoryImpl;
 import exercise.repository.impl.UserRepositoryImpl;
 import exercise.service.BuildingService;
-import exercise.utils.GetDistrictNameUtils;
 
 public class BuildingServiceImpl implements BuildingService {
 	BuildingRepository buildingRepository = new BuildingRepositoryImpl();

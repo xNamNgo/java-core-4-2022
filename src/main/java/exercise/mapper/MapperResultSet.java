@@ -23,10 +23,10 @@ public class MapperResultSet<T> {
 				for (int i = 0; i < resultSetMetaData.getColumnCount(); i++) {
 					String sqlColumnName = resultSetMetaData.getColumnName(i + 1);
 					Object sqlColumnValue = rs.getObject(i + 1);
-					for(Field field : fields) {
-						if(field.isAnnotationPresent(Column.class)) {
+					for (Field field : fields) {
+						if (field.isAnnotationPresent(Column.class)) {
 							Column column = field.getAnnotation(Column.class);
-							if(column.fieldName().equals(sqlColumnName)) {
+							if (column.fieldName().equals(sqlColumnName)) {
 								BeanUtils.setProperty(object, field.getName(), sqlColumnValue);
 								break;
 							}
@@ -36,7 +36,6 @@ public class MapperResultSet<T> {
 				results.add(object);
 			}
 		} catch (SQLException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
